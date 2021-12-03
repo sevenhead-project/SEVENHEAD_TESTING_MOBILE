@@ -1,0 +1,37 @@
+package com.barber.testsetup;
+
+import static org.easymock.EasyMock.eq;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import junit.framework.TestCase;
+
+import org.easymock.EasyMock;
+import org.junit.Before;
+import org.junit.Test;
+
+public class TestLogIn extends TestCase{
+
+    private ApplicationUser applicationUser;
+    private ApplicationUserService mockUserServiceObj;
+
+    @Before
+    public void setup() {
+        mockUserServiceObj = EasyMock.createMock(ApplicationUserService.class);
+        applicationUser = new ApplicationUser("User Sukses", "Password Sukses");
+
+    }
+
+    @Test
+    public void test() {
+        setup();
+
+        expect(mockUserServiceObj.findByUserName(eq("gooduser"))).andReturn(applicationUser);
+        replay(mockUserServiceObj);
+        LoginUser testUser = new LoginUser(mockUserServiceObj);
+
+        boolean checkStatus = testUser.validateCredentials("User Sukses", "Password Sukses");
+        assertTrue(checkStatus);
+
+
+        }
+}
